@@ -1,87 +1,145 @@
 class UIScreen_StatUI extends UIScreen;
 
 var UIButton MinusHP, MinusMobility, MinusOffense, MinusWill, MinusArmor, MinusDodge, MinusDefense, MinusHack, MinusPsiOffense;
-var UIButton PlusHP, PlusMobility, PlusOffense, PlusWill, PlusArmor, PlusDodge, PlusDefense, PlusHack, PlusPsiOffense;
 var UIImage ImageHP, ImageMobility, ImageOffense, ImageWill, ImageArmor, ImageDodge, ImageDefense, ImageHack, ImagePsiOffense;
-var UIText ResearchComplete, TechLabel, TechLabelLarge, RewardName, RewardLabel;
-var UIPanel BGBox;
+var UIButton PlusHP, PlusMobility, PlusOffense, PlusWill, PlusArmor, PlusDodge, PlusDefense, PlusHack, PlusPsiOffense;
+var UIPanel BoxHP, BoxMobility, BoxOffense, BoxWill, BoxArmor, BoxDodge, BoxDefense, BoxHack, BoxPsiOffense;
+var UIPanel ContainerBox;
 
-var int iLockboxRarity;
-var array<int> ChoiceIndices;
+var XComGameState_Unit ThisUnitState;
 
-simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Tech Tech)
+simulated function InitStatUI(XComGameState_Unit UnitState)
 {
-	//`Log("GrimyLoot_UIScreen.InitScreen starting...");
-	AlertScreen = Alert;
-	iLockboxRarity = LockboxRarity;
-	TechState = Tech;
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen setting width and height");
+	ThisUnitState = UnitState;
+
 	SetWidth(Width);
 	SetHeight(Height);
 	AnchorCenter();
 	OriginCenter();
 	
-	BGBox = Spawn(class'UIPanel', self);
-	BGBox.bAnimateOnInit = true;
-	BGBox.bIsNavigable = false;
-	BGBox.InitPanel('', 'X2BackgroundSimple');
-	BGBox.SetSize(Width, Height);
-	BGBox.AnchorCenter();
-	BGBox.OriginCenter();
+	ContainerBox = Spawn(class'UIPanel', self);
+	ContainerBox.bAnimateOnInit = true;
+	ContainerBox.bIsNavigable = false;
+	ContainerBox.InitPanel('', 'X2BackgroundSimple');
+	ContainerBox.SetSize(Width, Height);
+	ContainerBox.AnchorCenter();
+	ContainerBox.OriginCenter();
 	SetBGColor(bIsFocused);
 	
-	//`Log("GrimyLoot_UIScreen.InitScreen initializing ResearchComplete UIText");
-	ResearchComplete = Spawn(class'UIText', self);
-	ResearchComplete.bAnimateOnInit = true;
-	ResearchComplete.InitText('', AlertScreen.m_strResearchProjectComplete);
-	ResearchComplete.OriginCenter();
-	ResearchComplete.AnchorCenter();
-	ResearchComplete.SetPosition(-40, 0);
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen initializing TechLabel UIText");
-	TechLabel = Spawn(class'UIText',self);
-	TechLabel.bAnimateOnInit = true;
-	TechLabel.InitText('', AlertScreen.m_strResearchCompleteLabel);
-	TechLabel.OriginCenter();
-	TechLabel.AnchorCenter();
-	TechLabel.SetPosition(-20, 0);
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen initializing TechLabelLarge UIText");
-	TechLabelLarge = Spawn(class'UIText', self);
-	TechLabelLarge.bAnimateOnInit = true;
-	TechLabelLarge.InitText('', AlertScreen.m_strResearchCompleteLabel);
-	TechLabelLarge.OriginCenter();
-	TechLabelLarge.AnchorCenter();
-	TechLabelLarge.SetPosition(0, 0);
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen initializing RewardName UIText");
-	RewardName = Spawn(class'UIText', self);
-	RewardName.bAnimateOnInit = true;
-	RewardName.InitText();
-	RewardName.OriginCenter();
-	RewardName.AnchorCenter();
-	RewardName.SetPosition(20, 0);
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen initializing RewardLabel UIText");
-	RewardLabel = Spawn(class'UIText', self);
-	RewardLabel.bAnimateOnInit = true;
-	RewardLabel.InitText();
-	RewardLabel.OriginCenter();
-	RewardLabel.AnchorCenter();
-	RewardLabel.SetPosition(40, 0);
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen initializing RewardImage UIImage");
 	RewardImage = Spawn(class'UIImage', self);
 	RewardImage.InitImage('', TechState.GetImage());
 	RewardImage.OriginCenter();
 	RewardImage.AnchorCenter();
 	RewardImage.SetY(-Height / 4);
+
+	BoxHP = Spawn(class'UIPanel', ContainerBox);
+	BoxHP.InitPanel('', 'X2BackgroundSimple');
+
+	MinusHP = Spawn(class'UIButton', BoxHP);
+	MinusHP.InitButton('', , );
+
+	ImageHP = Spawn(class'UIImage', BoxHP);
+	ImageHP.InitImage('', );
+
+	PlusHP = Spawn(class'UIButton', BoxHP);
+	PlusHP.InitButton('', , );
+
+	BoxMobility = Spawn(class'UIPanel', ContainerBox);
+	BoxMobility.InitPanel('', 'X2BackgroundSimple');
 	
-	//`Log("GrimyLoot_UIScreen.InitLoot picking indices");
-	PickIndices();
+	MinusMobility = Spawn(class'UIButton', BoxMobility);
+	MinusMobility.InitButton('', , );
+
+	ImageMobility = Spawn(class'UIImage', BoxMobility);
+	ImageMobility.InitImage('', );
 	
-	//`Log("GrimyLoot_UIScreen.InitScreen spawning Choice1 UIButton");
+	PlusMobility = Spawn(class'UIButton', BoxMobility);
+	PlusMobility.InitButton('', , );
+
+	BoxOffense = Spawn(class'UIPanel', ContainerBox);
+	BoxOffense.InitPanel('', 'X2BackgroundSimple');
+	
+	MinusOffense = Spawn(class'UIButton', BoxOffense);
+	MinusOffense.InitButton('', , );
+
+	ImageOffense = Spawn(class'UIImage', BoxOffense);
+	ImageOffense.InitImage('', );
+	
+	PlusOffense = Spawn(class'UIButton', BoxOffense);
+	PlusOffense.InitButton('', , );
+
+	BoxWill = Spawn(class'UIPanel', ContainerBox);
+	BoxWill.InitPanel('', 'X2BackgroundSimple');
+	
+	MinusWill = Spawn(class'UIButton', BoxWill);
+	MinusWill.InitButton('', , );
+
+	ImageWill = Spawn(class'UIImage', BoxWill);
+	ImageWill.InitImage('', );
+	
+	PlusWill = Spawn(class'UIButton', BoxWill);
+	PlusWill.InitButton('', , );
+
+	BoxArmor = Spawn(class'UIPanel', ContainerBox);
+	BoxArmor.InitPanel('', 'X2BackgroundSimple');
+	
+	MinusArmor = Spawn(class'UIButton', BoxArmor);
+	MinusArmor.InitButton('', , );
+
+	ImageArmor = Spawn(class'UIImage', BoxArmor);
+	ImageArmor.InitImage('', );
+	
+	PlusArmor = Spawn(class'UIButton', BoxArmor);
+	PlusArmor.InitButton('', , );
+
+	BoxDodge = Spawn(class'UIPanel', ContainerBox);
+	BoxDodge.InitPanel('', 'X2BackgroundSimple');
+	
+	MinusDodge = Spawn(class'UIButton', BoxDodge);
+	MinusDodge.InitButton('', , );
+
+	ImageDodge = Spawn(class'UIImage', BoxDodge);
+	ImageDodge.InitImage('', );
+	
+	PlusDodge = Spawn(class'UIButton', BoxDodge);
+	PlusDodge.InitButton('', , );
+
+	BoxDefense = Spawn(class'UIPanel', ContainerBox);
+	BoxDefense.InitPanel('', 'X2BackgroundSimple');
+	
+	MinusDefense = Spawn(class'UIButton', BoxDefense);
+	MinusDefense.InitButton('', , );
+
+	ImageDefense = Spawn(class'UIImage', BoxDefense);
+	ImageDefense.InitImage('', );
+	
+	PlusDefense = Spawn(class'UIButton', BoxDefense);
+	PlusDefense.InitButton('', , );
+
+	BoxHack = Spawn(class'UIPanel', ContainerBox);
+	BoxHack.InitPanel('', 'X2BackgroundSimple');
+	
+	MinusHack = Spawn(class'UIButton', BoxHack);
+	MinusHack.InitButton('', , );
+
+	ImageHack = Spawn(class'UIImage', BoxHack);
+	ImageHack.InitImage('', );
+	
+	PlusHack = Spawn(class'UIButton', BoxHack);
+	PlusHack.InitButton('', , );
+	
+	BoxPsiOffense = Spawn(class'UIPanel', ContainerBox);
+	BoxPsiOffense.InitPanel('', 'X2BackgroundSimple');
+
+	MinusPsiOffense = Spawn(class'UIButton', BoxPsiOffense);
+	MinusPsiOffense.InitButton('', , );
+
+	ImagePsiOffense = Spawn(class'UIImage', BoxPsiOffense);
+	ImagePsiOffense.InitImage('', );
+		
+	PlusPsiOffense = Spawn(class'UIButton', BoxPsiOffense);
+	PlusPsiOffense.InitButton('', , );
+	
 	Choice1 = Spawn(class'UIButton', self);
 	Choice1.bAnimateOnInit = true;
 	Choice1.InitButton('Choice1', ChoiceNames[ChoiceIndices[0]], GiveItem);
@@ -95,7 +153,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 
 	if( `ISCONTROLLERACTIVE)
 	{
-		//Choice1.SetGamepadIcon(class'UIUtilities_Input'.const.ICON_Y_TRIANGLE);
 		Choice1.DisableNavigation();
 		ImageY = Spawn(class'UIImage', self);
 		ImageY.InitImage('', "img:///gfxComponents." $ class'UIUtilities_Input'.static.GetGamepadIconPrefix() $ class'UIUtilities_Input'.const.ICON_Y_TRIANGLE);
@@ -106,7 +163,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 		ImageY.SetPosition(Choice1.X - (Choice1.Width / 2 + ImageY.Width), Choice1.Y);
 	}
 	
-	//`Log("GrimyLoot_UIScreen.InitScreen spawning Choice2 UIButton");
 	Choice2 = Spawn(class'UIButton', self);
 	Choice2.bAnimateOnInit = true;
 	Choice2.InitButton('Choice2', ChoiceNames[ChoiceIndices[1]], GiveItem);
@@ -120,7 +176,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 	
 	if( `ISCONTROLLERACTIVE)
 	{
-		//Choice2.SetGamepadIcon(class'UIUtilities_Input'.const.ICON_X_SQUARE);
 		Choice2.DisableNavigation();
 		ImageX = Spawn(class'UIImage', self);
 		ImageX.InitImage('', "img:///gfxComponents." $ class'UIUtilities_Input'.static.GetGamepadIconPrefix() $ class'UIUtilities_Input'.const.ICON_X_SQUARE);
@@ -131,7 +186,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 		ImageX.SetPosition(Choice2.X - (Choice2.Width / 2 + ImageX.Width), Choice2.Y);
 	}
 	
-	//`Log("GrimyLoot_UIScreen.InitScreen spawning Choice3 UIButton");
 	Choice3 = Spawn(class'UIButton', self);
 	Choice3.bAnimateOnInit = true;
 	Choice3.InitButton('Choice3', ChoiceNames[ChoiceIndices[2]], GiveItem);
@@ -145,7 +199,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 	
 	if( `ISCONTROLLERACTIVE)
 	{
-		//Choice3.SetGamepadIcon(class'UIUtilities_Input'.const.ICON_B_CIRCLE);
 		Choice3.DisableNavigation();
 		ImageB = Spawn(class'UIImage', self);
 		ImageB.InitImage('', "img:///gfxComponents." $ class'UIUtilities_Input'.static.GetGamepadIconPrefix() $ class'UIUtilities_Input'.const.ICON_B_CIRCLE);
@@ -156,7 +209,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 		ImageB.SetPosition(Choice3.X - (Choice3.Width / 2 + ImageB.Width), Choice3.Y);
 	}
 	
-	//`Log("GrimyLoot_UIScreen.InitScreen spawning Choice4 UIButton");
 	Choice4 = Spawn(class'UIButton', self);
 	Choice4.bAnimateOnInit = true;
 	Choice4.InitButton('Choice4', ChoiceNames[ChoiceIndices[3]], GiveItem);
@@ -170,7 +222,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 	
 	if( `ISCONTROLLERACTIVE)
 	{
-		//Choice4.SetGamepadIcon(class'UIUtilities_Input'.const.ICON_A_X);
 		Choice4.DisableNavigation();
 		ImageA = Spawn(class'UIImage', self);
 		ImageA.InitImage('', "img:///gfxComponents." $ class'UIUtilities_Input'.static.GetGamepadIconPrefix() $ class'UIUtilities_Input'.const.ICON_A_X);
@@ -180,37 +231,6 @@ simulated function InitStatUI(UIAlert Alert, int LockboxRarity, XComGameState_Te
 		ImageA.SetSize(Choice4.Height, Choice4.Height);
 		ImageA.SetPosition(Choice4.X - (Choice4.Width / 2 + ImageA.Width), Choice4.Y);
 	}
-	
-	//`Log("GrimyLoot_UIScreen.InitScreen completing");
-}
-
-function PickIndices() {
-	//`Log("GrimyLoot_UIScreen.PickIndices starting...");
-
-	//ChoiceIndices[0] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	ChoiceIndices.AddItem(class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1));
-	
-	//ChoiceIndices[1] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	ChoiceIndices.AddItem(class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1));
-	while ( ChoiceIndices[1] == ChoiceIndices[0] ) {
-		ChoiceIndices[1] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	}
-
-	//ChoiceIndices[2] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	ChoiceIndices.AddItem(class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1));
-	while ( ChoiceIndices[2] == ChoiceIndices[1] || ChoiceIndices[2] == ChoiceIndices[0] ) {
-		ChoiceIndices[2] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	}
-
-	//ChoiceIndices[3] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	ChoiceIndices.AddItem(class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1));
-	while ( ChoiceIndices[3] == ChoiceIndices[2] || ChoiceIndices[3] == ChoiceIndices[1] || ChoiceIndices[3] == ChoiceIndices[0] ) {
-		ChoiceIndices[3] = class'GrimyLoot_Research'.static.IdentifyIndex(iLockboxRarity > 1);
-	}
-	//`Log("GrimyLoot_UIScreen.PickIndices picked indices are:" @ ChoiceIndices[0] $ "," @ ChoiceIndices[1] $ "," @ ChoiceIndices[2] $ ", and" @ ChoiceIndices[3]);
-	//`Log("GrimyLoot_UIScreen.PickIndices picked rewards are:" @ ChoiceNames[ChoiceIndices[0]] $ "," @ ChoiceNames[ChoiceIndices[1]] $ "," @ ChoiceNames[ChoiceIndices[2]] $ ", and" @ ChoiceNames[ChoiceIndices[3]]);
-	
-	//`Log("GrimyLoot_UIScreen.PickIndices completing...");
 }
 
 simulated function bool OnUnrealCommand(int cmd, int arg)
@@ -239,178 +259,9 @@ simulated function bool OnUnrealCommand(int cmd, int arg)
 	return super.OnUnrealCommand(cmd, arg);
 }
 
-function GiveItem(UIButton ButtonChoice) {
-	local XComGameState_Item ItemState;
-	
-	//`Log("GrimyLoot_UIScreen.GiveItem starting...");
-	//`Log("GrimyLoot_UIScreen.GiveItem ButtonChoice:" @ ButtonChoice); 
-
-	if ( ButtonChoice == Choice1 ) {
-		ItemState = class'GrimyLoot_Research'.static.IdentifyByIndex(TechState, ChoiceIndices[0], iLockboxRarity);
-	}
-	if ( ButtonChoice == Choice2 ) {
-		ItemState = class'GrimyLoot_Research'.static.IdentifyByIndex(TechState, ChoiceIndices[1], iLockboxRarity);
-	}
-	if ( ButtonChoice == Choice3 ) {
-		ItemState = class'GrimyLoot_Research'.static.IdentifyByIndex(TechState, ChoiceIndices[2], iLockboxRarity);
-	}
-	if ( ButtonChoice == Choice4 ) {
-		ItemState = class'GrimyLoot_Research'.static.IdentifyByIndex(TechState, ChoiceIndices[3], iLockboxRarity);
-	}
-
-	if ( MyItemCard == none ) {
-		MyItemCard = GrimyLoot_UIItemCard(AlertScreen.Spawn(class'GrimyLoot_UIItemCard', AlertScreen).InitItemCard());
-		MyItemCard.SetPosition(8, 90);
-	}
-	MyItemCard.PopulateItemCard(ItemState.GetMyTemplate(),ItemState.GetReference());
-	MyItemCard.Show();
-	
-	Choice1.Remove();
-	Choice2.Remove();
-	Choice3.Remove();
-	Choice4.Remove();
-
-	UpdateData();
-
-	//`Log("GrimyLoot_UIScreen.GiveItem completing...");
-}
-
-static function SetRecentName(String RetName) {
-	//`Log("GrimyLoot_UIScreen.SetRecentName starting...");
-
-	default.RecentName = RetName;
-	
-	//`Log("GrimyLoot_UIScreen.SetRecentName completing...");
-}
-
-// GrimyLootMod vanilla is based upon the concept of one item reward per tech of any kind, so WOTC version has to aassume the proper reward is ItemRewards[ItemsRewards.Length-1]. --Ginger
-function UpdateData(optional int RewardNo=-1) {
-	local XGParamTag ParamTag;
-	local TAlertCompletedInfo kInfo;
-	local X2ItemTemplateManager ItemTemplateManager;
-	local X2SchematicTemplate SchematicTemplate;
-	local X2ItemTemplate ItemReward; // Previously a property of TechState, ItemReward was of type X2ItemTemplate, now must be initialized from TechState.ItemRewards[RewardNo], of type array<X2ItemTemplate>. -- Ginger
-	
-	//`Log("GrimyLoot_UIScreen.UpdateData starting...");
-
-	if (RewardNo == -1)
-		RewardNo += TechState.ItemRewards.Length; // HAX: The ItemReward being given *should* always be the last in the array. Apparently ItemRewards is a dynamic array to store every reward given.
-	ItemReward = TechState.ItemRewards[RewardNo];
-
-	if (ItemReward != none ) { // TechState.ItemReward -> ItemReward
-		switch ( TechState.GetMyTemplateName() )
-		{
-			case 'Tech_IdentifyRareLockbox':
-				ParamTag = XGParamTag(`XEXPANDCONTEXT.FindTag("XGParam"));
-				ParamTag.StrValue0 = m_strRareName @ ItemReward.GetItemFriendlyNameNoStats(); // TechState.ItemReward -> ItemReward
-				break;
-			case 'Tech_IdentifyEpicLockbox':
-			case 'Tech_IdentifyEpicLockboxInstant':
-				ParamTag = XGParamTag(`XEXPANDCONTEXT.FindTag("XGParam"));
-				ParamTag.StrValue0 = m_strEpicName @ ItemReward.GetItemFriendlyNameNoStats(); // TechState.ItemReward -> ItemReward
-				break;
-			case 'Tech_IdentifyLegendaryLockbox':
-			case 'Tech_IdentifyLegendaryLockboxInstant':
-				ParamTag = XGParamTag(`XEXPANDCONTEXT.FindTag("XGParam"));
-				ParamTag.StrValue0 = m_strLegendaryName @ ItemReward.GetItemFriendlyNameNoStats(); // TechState.ItemReward -> ItemReward
-				break;
-			default:
-				return;
-		}
-		
-		kInfo.strName = TechState.GetDisplayName();
-		kInfo.strHeaderLabel = AlertScreen.m_strResearchCompleteLabel;
-				
-		if ( class'GrimyLoot_Research'.default.RANDOMIZE_NICKNAMES && RecentName != "" ) {
-			RecentName = default.RecentName;
-			kInfo.strBody = ParamTag.StrValue0;
-			ParamTag.StrValue0 = RecentName;
-		}
-		else {
-			kInfo.strBody = AlertScreen.m_strResearchProjectComplete;
-		}
-		kInfo.strBody $= "\n" $ `XEXPAND.ExpandString(TechState.GetMyTemplate().UnlockedDescription);
-
-		kInfo.strConfirm = AlertScreen.m_strAssignNewResearch;
-		kInfo.strCarryOn = AlertScreen.m_strCarryOn;
-		kInfo = AlertScreen.FillInTyganAlertComplete(kInfo);
-		kInfo.eColor = eUIState_Warning;
-		kInfo.clrAlert = MakeLinearColor(0.75, 0.75, 0.0, 1);
-
-		//`Log("ItemReward is" @ ItemReward);
-		//`Log("Its eInvSlot is" @ X2EquipmentTemplate(ItemReward).InventorySlot);
-		//`Log("Its CreatorTemplateName is" @ ItemReward.CreatorTemplateName);
-		//`Log("Its DataName is" @ ItemReward.DataName);
-
-		if ( X2EquipmentTemplate(ItemReward).InventorySlot != eInvSlot_PrimaryWeapon ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = ItemReward.strImage; // TechState.ItemReward -> ItemReward
-		}
-		// XPack armor must be done before schematic search because they use the same schematic as base armor
-		// All XPack armors within the same tier use the same image, so just use ORs
-		else if ( ItemReward.DataName == 'ReaperArmor' || ItemReward.DataName == 'SkirmisherArmor' || ItemReward.DataName == 'TemplarArmor' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_HORArmorConv";
-		}
-		else if ( ItemReward.DataName == 'PlatedReaperArmor' || ItemReward.DataName == 'PlatedSkirmisherArmor' || ItemReward.DataName == 'PlatedTemplarArmor' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_HORArmorPlat";
-		}
-		else if ( ItemReward.DataName == 'PoweredReaperArmor' || ItemReward.DataName == 'PoweredSkirmisherArmor' || ItemReward.DataName == 'PoweredTemplarArmor' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_HORArmorPowr";
-		}
-		else if ( ItemReward.CreatorTemplateName != '' ) { // TechState.ItemReward -> ItemReward
-			ItemTemplateManager = class'X2ItemTemplateManager'.static.GetItemTemplateManager();
-			SchematicTemplate = X2SchematicTemplate(ItemTemplateManager.FindItemTemplate(ItemReward.CreatorTemplateName)); // TechState.ItemReward -> ItemReward
-			kInfo.strImage = SchematicTemplate.strImage;
-		}
-		else if ( ItemReward.DataName == 'AssaultRifle_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///GrimyLootConvWeapons.GrimyConvAssaultRifle";
-		}
-		else if ( ItemReward.DataName == 'Cannon_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///GrimyLootConvWeapons.GrimyConvCannon";
-		}	
-		else if ( ItemReward.DataName == 'Shotgun_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///GrimyLootConvWeapons.GrimyConvShotgun";
-		}
-		else if ( ItemReward.DataName == 'SniperRifle_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///GrimyLootConvWeapons.GrimyConvSniperRifle";
-		}
-		else if ( ItemReward.DataName == 'AlienHunterRifle_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_DLC2Images.ConvBoltCaster";
-		}
-		else if ( ItemReward.DataName == 'VektorRifle_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_ConvVektor_Base";
-		}
-		else if ( ItemReward.DataName == 'Bullpup_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_ConvSMG_Base";
-		}
-		else if ( ItemReward.DataName == 'WristBlade_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_ConvSGauntlet";
-		}
-		else if ( ItemReward.DataName == 'WristBladeLeft_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_Common.ConvSecondaryWeapons.Sword"; // probably unnecessary
-		}
-		else if ( ItemReward.DataName == 'ShardGauntlet_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_ConvTGauntlet";
-		}
-		else if ( ItemReward.DataName == 'ShardGauntletLeft_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_ConvTGauntlet"; // probably unnecessary
-		}
-		else if ( ItemReward.DataName == 'Sidearm_CV' ) { // TechState.ItemReward -> ItemReward
-			kInfo.strImage = "img:///UILibrary_XPACK_StrategyImages.Inv_ConvTPistol_Base"; // maybe remove "_Base"? 
-		}
-		else {
-			kInfo.strImage = "img:///GrimyLootPackage.Inv_Storage_Module";
-		}
-		AlertScreen.BuildCompleteAlert(kInfo);
-	}
-
-	`SCREENSTACK.Pop(self);
-	
-	//`Log("GrimyLoot_UIScreen.UpdateData completing...");
-}
-
 simulated function SetBGColor(bool focused)
 {
-	BGBox.mc.FunctionString("gotoAndPlay", focused ? "cyan" : "gray");
+	ContainerBox.mc.FunctionString("gotoAndPlay", focused ? "cyan" : "gray");
 }
 
 simulated function OnReceiveFocus()

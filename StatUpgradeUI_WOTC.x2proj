@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Guid>7ff370a2-d7e1-4f61-9bda-7d5e53caed20</Guid>
+    <Name>StatUpgradeUI_WOTC</Name>
+    <Description>Description of My XCOM 2 Mod.</Description>
+    <SteamPublishID>0</SteamPublishID>
+    <AssemblyName>StatUpgradeUI_WOTC</AssemblyName>
+    <RootNamespace>StatUpgradeUI_WOTC</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+    <Content Include="Src\StatUpgradeUI_WOTC\Classes\UIScreen_StatUI.uc">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config" />
+    <Folder Include="Localization" />
+    <Folder Include="Src" />
+    <Folder Include="Src\StatUpgradeUI_WOTC" />
+    <Folder Include="Src\StatUpgradeUI_WOTC\Classes" />
+  </ItemGroup>
+  <Import Project="$(MSBuildLocalExtensionPath)\XCOM2.targets" />
+</Project>

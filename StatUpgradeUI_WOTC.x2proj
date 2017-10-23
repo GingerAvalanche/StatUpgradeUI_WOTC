@@ -10,6 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
+    <Content Include="Src\StatUpgradeUI_WOTC\Classes\UIPanel_StatUI_StatLine.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\StatUpgradeUI_WOTC\Classes\UIScreen_StatUI.uc">
       <SubType>Content</SubType>
     </Content>

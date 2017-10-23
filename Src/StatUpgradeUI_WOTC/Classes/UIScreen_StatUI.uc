@@ -1,9 +1,6 @@
 class UIScreen_StatUI extends UIScreen;
 
-var UIButton MinusHP, MinusMobility, MinusOffense, MinusWill, MinusArmor, MinusDodge, MinusDefense, MinusHack, MinusPsiOffense;
-var UIImage ImageHP, ImageMobility, ImageOffense, ImageWill, ImageArmor, ImageDodge, ImageDefense, ImageHack, ImagePsiOffense;
-var UIButton PlusHP, PlusMobility, PlusOffense, PlusWill, PlusArmor, PlusDodge, PlusDefense, PlusHack, PlusPsiOffense;
-var UIPanel BoxHP, BoxMobility, BoxOffense, BoxWill, BoxArmor, BoxDodge, BoxDefense, BoxHack, BoxPsiOffense;
+var UIPanel HP, Mobility, Offense, Will, Armor, Dodge, Defense, Hack, PsiOffense;
 var UIPanel ContainerBox;
 
 var XComGameState_Unit ThisUnitState;
@@ -25,120 +22,24 @@ simulated function InitStatUI(XComGameState_Unit UnitState)
 	ContainerBox.AnchorCenter();
 	ContainerBox.OriginCenter();
 	SetBGColor(bIsFocused);
+
+	HP = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Mobility = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Offense = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Will = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Armor = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Dodge = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Defense = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
+
+	Hack = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
 	
-	RewardImage = Spawn(class'UIImage', self);
-	RewardImage.InitImage('', TechState.GetImage());
-	RewardImage.OriginCenter();
-	RewardImage.AnchorCenter();
-	RewardImage.SetY(-Height / 4);
-
-	BoxHP = Spawn(class'UIPanel', ContainerBox);
-	BoxHP.InitPanel('', 'X2BackgroundSimple');
-
-	MinusHP = Spawn(class'UIButton', BoxHP);
-	MinusHP.InitButton('', , );
-
-	ImageHP = Spawn(class'UIImage', BoxHP);
-	ImageHP.InitImage('', );
-
-	PlusHP = Spawn(class'UIButton', BoxHP);
-	PlusHP.InitButton('', , );
-
-	BoxMobility = Spawn(class'UIPanel', ContainerBox);
-	BoxMobility.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusMobility = Spawn(class'UIButton', BoxMobility);
-	MinusMobility.InitButton('', , );
-
-	ImageMobility = Spawn(class'UIImage', BoxMobility);
-	ImageMobility.InitImage('', );
-	
-	PlusMobility = Spawn(class'UIButton', BoxMobility);
-	PlusMobility.InitButton('', , );
-
-	BoxOffense = Spawn(class'UIPanel', ContainerBox);
-	BoxOffense.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusOffense = Spawn(class'UIButton', BoxOffense);
-	MinusOffense.InitButton('', , );
-
-	ImageOffense = Spawn(class'UIImage', BoxOffense);
-	ImageOffense.InitImage('', );
-	
-	PlusOffense = Spawn(class'UIButton', BoxOffense);
-	PlusOffense.InitButton('', , );
-
-	BoxWill = Spawn(class'UIPanel', ContainerBox);
-	BoxWill.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusWill = Spawn(class'UIButton', BoxWill);
-	MinusWill.InitButton('', , );
-
-	ImageWill = Spawn(class'UIImage', BoxWill);
-	ImageWill.InitImage('', );
-	
-	PlusWill = Spawn(class'UIButton', BoxWill);
-	PlusWill.InitButton('', , );
-
-	BoxArmor = Spawn(class'UIPanel', ContainerBox);
-	BoxArmor.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusArmor = Spawn(class'UIButton', BoxArmor);
-	MinusArmor.InitButton('', , );
-
-	ImageArmor = Spawn(class'UIImage', BoxArmor);
-	ImageArmor.InitImage('', );
-	
-	PlusArmor = Spawn(class'UIButton', BoxArmor);
-	PlusArmor.InitButton('', , );
-
-	BoxDodge = Spawn(class'UIPanel', ContainerBox);
-	BoxDodge.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusDodge = Spawn(class'UIButton', BoxDodge);
-	MinusDodge.InitButton('', , );
-
-	ImageDodge = Spawn(class'UIImage', BoxDodge);
-	ImageDodge.InitImage('', );
-	
-	PlusDodge = Spawn(class'UIButton', BoxDodge);
-	PlusDodge.InitButton('', , );
-
-	BoxDefense = Spawn(class'UIPanel', ContainerBox);
-	BoxDefense.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusDefense = Spawn(class'UIButton', BoxDefense);
-	MinusDefense.InitButton('', , );
-
-	ImageDefense = Spawn(class'UIImage', BoxDefense);
-	ImageDefense.InitImage('', );
-	
-	PlusDefense = Spawn(class'UIButton', BoxDefense);
-	PlusDefense.InitButton('', , );
-
-	BoxHack = Spawn(class'UIPanel', ContainerBox);
-	BoxHack.InitPanel('', 'X2BackgroundSimple');
-	
-	MinusHack = Spawn(class'UIButton', BoxHack);
-	MinusHack.InitButton('', , );
-
-	ImageHack = Spawn(class'UIImage', BoxHack);
-	ImageHack.InitImage('', );
-	
-	PlusHack = Spawn(class'UIButton', BoxHack);
-	PlusHack.InitButton('', , );
-	
-	BoxPsiOffense = Spawn(class'UIPanel', ContainerBox);
-	BoxPsiOffense.InitPanel('', 'X2BackgroundSimple');
-
-	MinusPsiOffense = Spawn(class'UIButton', BoxPsiOffense);
-	MinusPsiOffense.InitButton('', , );
-
-	ImagePsiOffense = Spawn(class'UIImage', BoxPsiOffense);
-	ImagePsiOffense.InitImage('', );
-		
-	PlusPsiOffense = Spawn(class'UIButton', BoxPsiOffense);
-	PlusPsiOffense.InitButton('', , );
+	PsiOffense = Spawn(class'UIPanel_StatUI_StatLine', ContainerBox).InitStatLine();
 	
 	Choice1 = Spawn(class'UIButton', self);
 	Choice1.bAnimateOnInit = true;
